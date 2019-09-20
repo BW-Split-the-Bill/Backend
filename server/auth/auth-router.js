@@ -9,7 +9,7 @@ authRouter.post('/register', async (req, res) => {
     const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
     user.password = hash;
   
-    return db('users').insert(user)
+    return db('auth').insert(user)
       .then(saved => {
         // a jwt should be generated
         const token = generateToken(saved);
@@ -28,7 +28,7 @@ authRouter.post('/register', async (req, res) => {
     let { username, password } = req.body;
     // console.log('username', username, 'password', password)
     // console.log('req.body', req.body)
-    return db('users').where({username: req.body.username})
+    return db('auth').where({username: req.body.username})
       .first()
       .then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
