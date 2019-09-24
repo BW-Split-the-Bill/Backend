@@ -6,13 +6,11 @@ const restricted = require('../middleware/restricted.js');
 
 tablesRouter.post('/new', restricted, async (req, res) => {
     const table = req.body
-    return db('tables').insert(table)
-    .then(saved => {
-        res.status(201).json(saved);
-    })
-    .catch(err => {
-        res.status(500).json('failed to create new table', error)
-    });
+    const restaurant = req.body
+    const confirm = await db('tables').insert(table)
+    const tableId = confirm[0]
+    const thing = await db('tables').where({ tableId })
+    res.status(201).json(thing);
 });
 
 tablesRouter.get('/', restricted, async (req, res) => {
