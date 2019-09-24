@@ -3,13 +3,12 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const db = require('../database/dbConfig.js');
 
-
 authRouter.post('/register', async (req, res) => {
-    let user = req.body;
+    const user = req.body;
     const hash = bcrypt.hashSync(user.password, 10); // 2 ^ n
     user.password = hash;
   
-    return db('auth').insert(user)
+    return db('users').insert(user)
       .then(saved => {
         // a jwt should be generated
         const token = generateToken(saved);
@@ -28,7 +27,7 @@ authRouter.post('/register', async (req, res) => {
     let { username, password } = req.body;
     // console.log('username', username, 'password', password)
     // console.log('req.body', req.body)
-    return db('auth').where({username: req.body.username})
+    return db('users').where({username: req.body.username})
       .first()
       .then(user => {
         if (user && bcrypt.compareSync(password, user.password)) {
@@ -48,6 +47,8 @@ authRouter.post('/register', async (req, res) => {
         res.status(500).json(error);
       });
   });
+
+  
   
   // for successful registration and login
   function generateToken(user) {

@@ -1,21 +1,11 @@
 
 exports.up = function(knex, Promise) {
-    return knex.schema.createTable('auth', users => {
+    return knex.schema.createTable('users', users => {
         users.increments('userId');
         users.string('username', 128)
             .notNullable()
             .unique();
         users.string('password', 128).notNullable();
-    })
-    .createTable('users', users => {
-        users.increments('infoKey');
-        users.integer('userId')
-            .unsigned()
-            .notNullable()
-            .references('userId')
-            .inTable('auth')
-            .onDelete('CASCADE')
-            .onUpdate('CASCADE');
         users.string('firstName', 128).notNullable();
         users.string('lastName', 128).notNullable();
         users.string('email', 128).notNullable();
@@ -25,8 +15,9 @@ exports.up = function(knex, Promise) {
         table.increments('tableId');
         table.string('restaurant', 128).notNullable();
         table.decimal('amountDue').notNullable();
+        table.integer('peopleCount', 5).notNullable();
     })
-    .createTable('tableUsersPaid', table => {
+    .createTable('tableUsernamePaid', table => {
         table.integer('tableId')
             .unsigned()
             .notNullable()
@@ -34,10 +25,10 @@ exports.up = function(knex, Promise) {
             .inTable('tables')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
-        table.integer('userId')
+        table.integer('username')
             .unsigned()
             .notNullable()
-            .references('userId')
+            .references('username')
             .inTable('auth')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
@@ -47,9 +38,8 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
     return knex.schema
-    .dropTableIfExists('tableUsersPaid')
+    .dropTableIfExists('tableUsernamePaid')
     .dropTableIfExists('tables')
     .dropTableIfExists('users')
-    .dropTableIfExists('auth');
 };
 

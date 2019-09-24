@@ -6,6 +6,7 @@ require('dotenv').config();
 // routers=require('') go here
 const authRouter = require('../auth/auth-router.js')
 const usersRouter = require('../users/users-router.js')
+const tablesRouter = require('../tables/tables-router.js')
 
 const server = express();
 
@@ -15,6 +16,7 @@ server.use(express.json());
 
 server.use('/auth/', authRouter);
 server.use('/users/', usersRouter);
+server.use('/tables/', tablesRouter);
 
 server.get('/', (req, res) => {
     res.status(200).json({message: 'OK running'});
