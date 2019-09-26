@@ -16,8 +16,10 @@ exports.up = function(knex, Promise) {
         table.string('restaurant', 128).notNullable();
         table.decimal('amountDue').notNullable();
         table.integer('peopleCount', 5).notNullable();
+        table.string('createdBy', 128).notNullable();
     })
     .createTable('tableUsernamePaid', table => {
+        table.increments('ledgerId');
         table.integer('tableId')
             .unsigned()
             .notNullable()
@@ -25,11 +27,11 @@ exports.up = function(knex, Promise) {
             .inTable('tables')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
-        table.integer('username')
+        table.string('username')
             .unsigned()
             .notNullable()
             .references('username')
-            .inTable('auth')
+            .inTable('users')
             .onDelete('CASCADE')
             .onUpdate('CASCADE');
         table.boolean('paid').notNullable().defaultTo(false);

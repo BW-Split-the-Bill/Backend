@@ -16,6 +16,11 @@ usersRouter.get('/all', restricted, async (req, res) => {
 });
 
 
+usersRouter.get('/choices', async (req, res) => {
+    const authDb = await db('users').select('username');
+    res.status(200).json(authDb);        
+})
+
 
 
 module.exports = usersRouter;
