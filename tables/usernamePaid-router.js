@@ -38,7 +38,7 @@ usernamePaidRouter.put('/ledgers/:id/pay', restricted, async (req, res) => {
 
 usernamePaidRouter.post('/ledgers/', restricted, async (req, res) => {
     const { username } = req.body
-    console.log('username', username)
+    // console.log('username', username)
     const response = await db('tableUsernamePaid').where({ username })
     if(response.length === 0){ 
         res.status(200).json({message: 'This user is not on any tabs'})
