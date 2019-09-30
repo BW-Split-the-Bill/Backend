@@ -3,6 +3,44 @@ const request = require('supertest');
 const server = require('./server.js');
 
 
+describe('the server with seeds', () => {
+    const credentials = {
+        "username":"cale2", 
+        "password":"pass",
+        "firstName":"Cale",
+        "lastName":"Test",
+        "phoneNumber":"480-555-1234",
+        "email":"test@test.test"	
+    };
+     
+    describe('the get username choices function', () => {
+        it('should return status 200', async () => {
+            //test setup
+            return request(server)
+            .get('/users/choices')
+            .then(res => {
+                expect(res.status).toBe(200)
+            })
+        });
+
+        // this test should fail if seeds were not just run immediately prior, due to .unique sqlite constraint
+        // knex seed:run  --env=testing
+        it('should return a list of the usernames (this test will fail if seeds were not run immediately prior)', async () => {
+          //test setup
+            return request(server)
+            .post('/auth/register')
+            .send(credentials)
+            .then(res => {
+                return request(server)
+                .get('/users/choices')
+                .then(res => {
+                    expect(res.body.length).toBe(7)
+                })
+            })
+        });
+    });
+})
+
 describe('The server', () => {
     const credentials = {
         "username":"cale2", 
