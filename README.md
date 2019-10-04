@@ -1,6 +1,7 @@
 # Backend
 
 Split the Bill project backend
+  ->   https://split-thebill.herokuapp.com/
 
 ## Table of contents
 
