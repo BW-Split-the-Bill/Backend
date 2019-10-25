@@ -1,7 +1,8 @@
 const authRouter = require('express').Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const db = require('../database/dbConfig.js');
+const generateToken = require('../middleware/generateToken.js')
 
 
 authRouter.post('/register', async (req, res) => {
@@ -50,21 +51,21 @@ authRouter.post('/register', async (req, res) => {
   });
   
   // for successful registration and login
-  function generateToken(user) {
-    // header payload and verify signature
-    // payload -> username, id, department, expiration date
-    // verify signature -> a secret
-    // console.log(user);
-    const payload = {
-      sub: user.id,
-      username: user.username,
-    };
+  // function generateToken(user) {
+  //   // header payload and verify signature
+  //   // payload -> username, id, department, expiration date
+  //   // verify signature -> a secret
+  //   // console.log(user);
+  //   const payload = {
+  //     sub: user.id,
+  //     username: user.username,
+  //   };
     
-    const options = {
-      expiresIn: '1d',
-    };
+  //   const options = {
+  //     expiresIn: '1d',
+  //   };
   
-    return jwt.sign(payload, process.env.JWT_SECRET, options);
-  }
+  //   return jwt.sign(payload, process.env.JWT_SECRET, options);
+  // }
   
   module.exports = authRouter;
